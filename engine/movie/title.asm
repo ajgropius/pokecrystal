@@ -196,7 +196,6 @@ _TitleScreen:
 	ldh [hBGMapMode], a
 
 	xor a
-	ld [wSuicuneFrame], a
 
 ; Play starting sound effect
 	call SFXChannelsOff
@@ -205,43 +204,12 @@ _TitleScreen:
 
 	ret
 
-SuicuneFrameIterator:
-	ld hl, wSuicuneFrame
-	ld a, [hl]
-	ld c, a
-	inc [hl]
-
-; Only do this once every eight frames
-	and %111
-	ret nz
-
-	ld a, c
-	and %11000
-	sla a
-	swap a
-	ld e, a
-	ld d, $0
-	ld hl, .Frames
-	add hl, de
-	ld d, [hl]
-	xor a
-	ldh [hBGMapMode], a
-	call LoadSuicuneFrame
-	ld a, $1
-	ldh [hBGMapMode], a
-	ld a, $3
-	ldh [hBGMapThird], a
-	ret
-
 .Frames:
 	db $80 ; vTiles3 tile $80
 	db $88 ; vTiles3 tile $88
 	db $00 ; vTiles5 tile $00
 	db $08 ; vTiles5 tile $08
 
-LoadSuicuneFrame:
-	hlcoord 6, 12
-	ld b, 6
 .bgrows
 	ld c, 8
 .col
