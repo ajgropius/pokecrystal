@@ -72,13 +72,13 @@ _TitleScreen:
 	ld a, 6
 	call ByteFill
 
-; 'CRYSTAL VERSION'
+; 'STRAWBERRY VERSION'
 	hlbgcoord 5, 9
 	ld bc, NAME_LENGTH ; length of version text
 	ld a, 1
 	call ByteFill
 
-; Suicune gfx
+; Mew gfx
 	hlbgcoord 0, 12
 	ld bc, 6 * BG_MAP_WIDTH ; the rest of the screen
 	ld a, 0 | VRAM_BANK_1
@@ -91,11 +91,6 @@ _TitleScreen:
 ; Decompress logo
 	ld hl, TitleLogoGFX
 	ld de, vTiles1
-	call Decompress
-
-; Decompress background crystal
-	ld hl, TitleCrystalGFX
-	ld de, vTiles0
 	call Decompress
 
 ; Clear screen tiles
@@ -117,13 +112,6 @@ _TitleScreen:
 	ld d, $c
 	ld e, $10
 	call DrawTitleGraphic
-
-; Initialize running Suicune?
-	ld d, $0
-	call LoadSuicuneFrame
-
-; Initialize background crystal
-	call InitializeBackground
 
 ; Save WRAM bank
 	ldh a, [rSVBK]
@@ -340,9 +328,6 @@ InitializeBackground:
 	jr nz, .loop2
 	ret
 
-AnimateTitleCrystal:
-; Move the title screen crystal downward until it's fully visible
-
 ; Stop at y=6
 ; y is really from the bottom of the sprite, which is two tiles high
 	ld hl, wVirtualOAMSprite00YCoord
@@ -350,12 +335,6 @@ AnimateTitleCrystal:
 	cp 6 + 2 * TILE_WIDTH
 	ret z
 
-; Move all 30 parts of the crystal down by 2
-	ld c, 30
-.loop
-	ld a, [hl]
-	add 2
-	ld [hli], a ; y
 rept SPRITEOAMSTRUCT_LENGTH - 1
 	inc hl
 endr
@@ -364,14 +343,11 @@ endr
 
 	ret
 
-TitleSuicuneGFX:
+TitleMewGFX:
 INCBIN "gfx/title/suicune.2bpp.lz"
 
 TitleLogoGFX:
 INCBIN "gfx/title/logo.2bpp.lz"
-
-TitleCrystalGFX:
-INCBIN "gfx/title/crystal.2bpp.lz"
 
 TitleScreenPalettes:
 INCLUDE "gfx/title/title.pal"
