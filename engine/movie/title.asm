@@ -312,7 +312,7 @@ endr
 	ret
 
 TitleMewGFX:
-INCBIN "gfx/title/suicune.2bpp.lz"
+INCBIN "gfx/pokemon/mew/front.animated.2bpp.lz.b6da9713"
 
 TitleLogoGFX:
 INCBIN "gfx/title/logo.2bpp.lz"
